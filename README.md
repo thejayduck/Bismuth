@@ -96,4 +96,4 @@ Disables notifications when the wallpaper is successfully set.
 - `bg-tile`: Tiles the image on the screen.
 
 ### To-Do
-- [ ] Save image as `.wallpaper.jpg` for `.fehbg`.
+- [x] Save image as `.wallpaper.jpg` for `.fehbg`.
