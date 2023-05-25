@@ -11,6 +11,6 @@ pub enum Error {
     #[error("Failed to set image using feh '{0}'")]
     Feh(String),
 
-    #[error("Failed to retrive save directory")]
+    #[error("Failed to retrieve save directory")]
     Directory,
 }
