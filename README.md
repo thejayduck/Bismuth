@@ -4,7 +4,8 @@
 
 - [About](#about)
 - [Dependencies](#dependencies)
-  - [For Arch Users](#for-arch-users)
+  - [Arch](#for-arch)
+  - [Debian, Ubuntu and Mint](#for-debian-ubuntu-and-mint)
 - [Installation](#installation)
 - [Usage](#usage)
   - [Commands](#commands)
