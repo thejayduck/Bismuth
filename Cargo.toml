@@ -1,6 +1,6 @@
 [package]
-name = "rust-wallpaper"
-version = "0.1.0"
+name = "bismuth"
+version = "1.0.0"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.
@@ -9,10 +9,11 @@ serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 reqwest = { version = "0.11", features = ["json", "stream"] }
 tokio = { version = "1", features = ["full"] }
-clap = {version = "4.3.0", features = ["derive"]}
+clap = { version = "4.3.0", features = ["derive"] }
 notify-rust = "4.8.0"
 anyhow = "1.0.71"
 thiserror = "1.0.40"
 tokio-stream = "0.1.14"
 tokio-util = { version = "0.7.8", features = ["io"] }
 directories = "5.0.1"
+Inflector = { version = "0.11.4", default-features = false }

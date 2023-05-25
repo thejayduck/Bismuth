@@ -1,4 +1,4 @@
-# Rust Wallpaper
+# Bismuth
 
 ## Table of Contents
 
@@ -13,7 +13,7 @@
 - [To-Do](#to-do)
 
 ## About
-rust-wallpaper is a lightweight Rust script that sets your desktop wallpaper to the latest daily Bing image. 
+Bismuth is a lightweight Rust script that sets your desktop wallpaper to the latest daily Bing image. 
 
 ## Dependencies
 |Dependency|Link                                              |
@@ -21,7 +21,7 @@ rust-wallpaper is a lightweight Rust script that sets your desktop wallpaper to 
 |feh       |[Github](https://github.com/derf/feh)             |
 |libnotify |[Gitlab](https://gitlab.gnome.org/GNOME/libnotify)|
 
-### For Arch Users
+### For Arch
 ```
 paru -S feh libnotify
 ```
@@ -32,13 +32,18 @@ yay -S feh libnotify
 sudo pacman -S feh libnotify
 ```
 
+### For Debian, Ubuntu and Mint
+```
+sudo apt install feh libnotify-dev
+```
+
 ## Installation
 1\. Clone the repository and cd into it.
 ```
-git clone "https://github.com/thejayduck/rust-wallpaper"
-cd rust-wallpaper
+git clone "https://github.com/thejayduck/bismuth"
+cd Bismuth
 ```
-2\. Build rust-wallpaper
+2\. Build Bismuth
 ```
 cargo build --release
 ```
@@ -46,13 +51,17 @@ cargo build --release
 ## Usage
 Here's an example usage of the script.
 ```
-rust-wallpaper --silent --mode bg-max
+bismuth --silent --mode bg-max
 ```
 Or you can also simply do;
 ```
-rust-wallpaper
+bismuth
 ```
 Which is going to set your wallpaper using `bg-fill` option, and send a notification.
+
+The wallpaper gets saved at `$HOME`/.config with the name `.wallpaper.jpg`.
+
+Example `/home/$USER/.local/share/.wallpaper.jpg`
 
 ### Commands
 | Command                  | Description                                |
@@ -64,7 +73,7 @@ Which is going to set your wallpaper using `bg-fill` option, and send a notifica
 
 ### `--help`
 ```
-Usage: rust-wallpaper [OPTIONS]
+Usage: bismuth [OPTIONS]
 
 Options:
   -s, --silent

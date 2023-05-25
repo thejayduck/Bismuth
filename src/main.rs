@@ -1,6 +1,7 @@
 use args::Arguments;
 use clap::Parser;
 use directories::BaseDirs;
+use inflector::{self, Inflector};
 use notify_rust::Notification;
 use std::{path::PathBuf, process::Command};
 use tokio_stream::StreamExt;
@@ -10,7 +11,7 @@ mod args;
 mod errors;
 
 const ICON: &str = "image-jpeg";
-const SUMMARY: &str = "rust-wallpaper";
+const NAME: &str = env!("CARGO_PKG_NAME");
 
 struct ImageObject {
     title: String,
@@ -47,9 +48,9 @@ async fn main() -> anyhow::Result<()> {
 
     if feh_command.status.success() && !args.silent {
         send_notification(
-            SUMMARY,
+            &NAME.to_pascal_case(),
             &format!(
-                "Wallpaper successfully set with <b>{0}</b> mode.\nTitle: <b>{1}</b>",
+                "Wallpaper successfully set with {0} mode.\nTitle: {1}",
                 mode, image.title
             ),
             ICON,
