@@ -62,8 +62,6 @@ Which is going to set your wallpaper using `fill` option, and send a notificatio
 
 The wallpaper gets saved at `$HOME/.local/share/.wallpaper.jpg`.
 
-Example `/home/$USER/.local/share/.wallpaper.jpg`
-
 ### Commands
 | Command                  | Description                                |
 |--------------------------|--------------------------------------------|
