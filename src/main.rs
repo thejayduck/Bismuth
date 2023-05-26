@@ -101,10 +101,10 @@ fn send_notification(summary: &str, body: &str, icon: &str) -> anyhow::Result<()
 
 fn mode(value: args::Modes) -> &'static str {
     match value {
-        args::Modes::BgCenter => "--bg-center",
-        args::Modes::BgFill => "--bg-fill",
-        args::Modes::BgMax => "--bg-max",
-        args::Modes::BgScale => "--bg-scale",
-        args::Modes::BgTile => "--bg-tile",
+        args::Modes::Center => "--bg-center",
+        args::Modes::Fill => "--bg-fill",
+        args::Modes::Max => "--bg-max",
+        args::Modes::Scale => "--bg-scale",
+        args::Modes::Tile => "--bg-tile",
     }
 }

@@ -52,15 +52,15 @@ cargo build --release
 ## Usage
 Here's an example usage of the script.
 ```
-bismuth --silent --mode bg-max
+bismuth --silent --mode max
 ```
 Or you can also simply do;
 ```
 bismuth
 ```
-Which is going to set your wallpaper using `bg-fill` option, and send a notification.
+Which is going to set your wallpaper using `fill` option, and send a notification.
 
-The wallpaper gets saved at `$HOME`/.config with the name `.wallpaper.jpg`.
+The wallpaper gets saved at `$HOME/.local/share/.wallpaper.jpg`.
 
 Example `/home/$USER/.local/share/.wallpaper.jpg`
 
@@ -77,33 +77,21 @@ Example `/home/$USER/.local/share/.wallpaper.jpg`
 Usage: bismuth [OPTIONS]
 
 Options:
-  -s, --silent
-          Disables notifications
-
-  -m, --mode <MODE>
-          Specifies the scaling options for Feh.
-          
-          Available modes: - `BgCenter`: Centers the image on the screen without scaling. - `BgFill`: Scales the image to fit the screen and preserves aspect ratio. - `BgMax`: Scales the image to the maximum size with black borders on one side. - `BgScale`: Fills the screen but doesn't preserve the aspect raio. - `BgTile`: Tiles the image on the screen.
-          
-          [default: bg-fill]
-          [possible values: bg-center, bg-fill, bg-max, bg-scale, bg-tile]
-
-  -h, --help
-          Print help (see a summary with '-h')
-
-  -V, --version
-          Print version
+  -s, --silent       Disables notifications
+  -m, --mode <MODE>  Specifies the scaling options for Feh [default: fill] [possible values: center, fill, max, scale, tile]
+  -h, --help         Print help (see more with '--help')
+  -V, --version      Print version
 ```
 
 ### `--silent`
 Disables notifications when the wallpaper is successfully set.
 
 ### `--mode <MODE>`
-- `bg-center`: Centers the image on the screen without scaling.
-- `bg-fill`: Scales the image to fit the screen and preserves aspect ratio.
-- `bg-max`: Scales the image to the maximum size with black borders on one side.
-- `bg-scale`: Fills the screen, but doesn't preserve the aspect ratio.
-- `bg-tile`: Tiles the image on the screen.
+- `center`: Centers the image on the screen without scaling.
+- `fill`: Scales the image to fit the screen and preserves aspect ratio.
+- `max`: Scales the image to the maximum size with black borders on one side.
+- `scale`: Fills the screen, but doesn't preserve the aspect ratio.
+- `tile`: Tiles the image on the screen.
 
 ### To-Do
 - [x] Save image as `.wallpaper.jpg` for `.fehbg`.
