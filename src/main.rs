@@ -44,24 +44,20 @@ async fn main() -> anyhow::Result<()> {
     let image_url = format!("https://bing.com/{}", image.url);
     let destination = save_image(&image_url).await?;
 
-    let feh_command = Command::new("feh").arg(mode).arg(destination).output()?;
+    if let Some(custom_command) = args.custom_command {
+        let command_arg = custom_command.replace("%", &destination.to_string_lossy().into_owned());
 
-    if feh_command.status.success() && !args.silent {
+        Command::new("sh").arg("-c").arg(command_arg).spawn()?
+    } else {
+        Command::new("feh").arg(mode).arg(&destination).spawn()?
+    };
+
+    if !args.silent {
         send_notification(
             &NAME.to_pascal_case(),
-            &format!(
-                "Wallpaper successfully set with {0} mode.\nTitle: {1}",
-                mode, image.title
-            ),
+            &format!("Wallpaper successfully Set.\nTitle: {0}", image.title),
             ICON,
         )?;
-    }
-
-    if !feh_command.status.success() {
-        return Err(errors::Error::Feh(
-            std::string::String::from_utf8(feh_command.stderr).unwrap(),
-        )
-        .into());
     }
 
     Ok(())

@@ -17,6 +17,10 @@ pub struct Arguments {
     ///  - `Tile`: Tiles the image on the screen.
     #[clap(long, short, value_enum, default_value_t = Modes::Fill)]
     pub mode: Modes,
+
+    /// Call custom wallpaper command
+    #[clap(long, short)]
+    pub custom_command: Option<String>,
 }
 
 #[derive(Debug, ValueEnum, Clone)]

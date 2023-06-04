@@ -11,6 +11,7 @@
   - [Commands](#commands)
   - [silent](#silent)
   - [mode](#mode-mode)
+  - [custom command](#custom-command-custom_command)
 - [To-Do](#to-do)
 
 ## About
@@ -54,31 +55,51 @@ Here's an example usage of the script.
 ```
 bismuth --silent --mode max
 ```
+
+---
+
 Or you can also simply do;
+
+Which calls `feh` using `--bg-fill` option as default.
 ```
 bismuth
 ```
-Which is going to set your wallpaper using `fill` option, and send a notification.
+
+---
+
+Here's an example of a custom command, in this case using `swaybg`.
+
+`%` represents the file destination.
+```
+bismuth -c 'swaybg --image %'
+```
 
 The wallpaper gets saved at `$HOME/.local/share/.wallpaper.jpg`.
 
 ### Commands
-| Command                  | Description                                |
-|--------------------------|--------------------------------------------|
-| `--silent`, `-s`         | Disable notifications.                     |
-| `--mode`, `-m` `<MODE>`  | Set feh scaling options.                   |
-| `--help`, `-h`           | Display help information.                  |
-| `--version`, `-V`        | Show the version of the script.            |
+| Command                                      | Description                                |
+|----------------------------------------------|--------------------------------------------|
+| `--silent`, `-s`                             | Disable notifications.                     |
+| `--mode`, `-m` `<MODE>`                      | Set feh scaling options.                   |
+| `--custom-command`, `-c` `<CUSTOM_COMMAND>`  | Set background using custom command.       |
+| `--help`, `-h`                               | Display help information.                  |
+| `--version`, `-V`                            | Show the version of the script.            |
 
 ### `--help`
 ```
 Usage: bismuth [OPTIONS]
 
 Options:
-  -s, --silent       Disables notifications
-  -m, --mode <MODE>  Specifies the scaling options for Feh [default: fill] [possible values: center, fill, max, scale, tile]
-  -h, --help         Print help (see more with '--help')
-  -V, --version      Print version
+  -s, --silent
+          Disables notifications
+  -m, --mode <MODE>
+          Specifies the scaling options for Feh [default: fill] [possible values: center, fill, max, scale, tile]
+  -c, --custom-command <CUSTOM_COMMAND>
+          Call custom wallpaper command
+  -h, --help
+          Print help (see more with '--help')
+  -V, --version
+          Print version
 ```
 
 ### `--silent`
@@ -91,5 +112,13 @@ Disables notifications when the wallpaper is successfully set.
 - `scale`: Fills the screen, but doesn't preserve the aspect ratio.
 - `tile`: Tiles the image on the screen.
 
+### `--custom-command <CUSTOM_COMMAND>`
+Sets wallpaper using a custom command.
+
+Example `bismuth -c "swaybg --image %"` 
+
+The `%` symbol is important as it signifies the file destination.
+
 ### To-Do
 - [x] Save image as `.wallpaper.jpg` for `.fehbg`.
+- [x] Custom command support.
