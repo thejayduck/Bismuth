@@ -1,9 +1,8 @@
 use args::Arguments;
 use clap::Parser;
-use directories::BaseDirs;
 use inflector::{self, Inflector};
 use notify_rust::Notification;
-use std::{path::PathBuf, process::Command};
+use std::{path::{PathBuf, Path}, process::Command, fs::{self}};
 use tokio_stream::StreamExt;
 use tokio_util::io::StreamReader;
 
@@ -21,19 +20,22 @@ struct ImageObject {
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
     let api_url = "https://www.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1&mkt=en-US";
+    let config_dir = get_config_dir()?;
 
     let args = Arguments::parse();
     let mode = mode(args.mode);
 
     let client = reqwest::Client::new();
-    let response: serde_json::Value = client
-        .get(api_url)
-        .send()
-        .await
-        .map_err(|_| errors::Error::Domain(api_url.to_owned()))?
-        .json()
-        .await
-        .map_err(|_| errors::Error::ImageRequest(api_url.to_owned()))?;
+    let response: serde_json::Value = match client.get(api_url).send().await {
+            Ok(response) => response.json().await.map_err(|_| errors::Error::ImageRequest(api_url.to_owned()))?,
+            Err(_) => {
+                if let Ok(custom_command) = read_config(&config_dir).await {
+                    Command::new("sh").arg("-c").arg(custom_command).spawn()?;
+                }
+
+                return Ok(());
+            }
+        };        
 
     let image_object = response["images"].as_array().unwrap().first().unwrap();
     let image = ImageObject {
@@ -42,11 +44,11 @@ async fn main() -> anyhow::Result<()> {
     };
 
     let image_url = format!("https://bing.com/{}", image.url);
-    let destination = save_image(&image_url).await?;
+    let destination = save_image(&image_url, &config_dir).await?;
 
     if let Some(custom_command) = args.custom_command {
         let command_arg = custom_command.replace("%", &destination.to_string_lossy().into_owned());
-
+        write_config(&config_dir, &command_arg).await?; // Saves custom command
         Command::new("sh").arg("-c").arg(command_arg).spawn()?
     } else {
         Command::new("feh").arg(mode).arg(&destination).spawn()?
@@ -63,10 +65,37 @@ async fn main() -> anyhow::Result<()> {
     Ok(())
 }
 
-async fn save_image(image_url: &String) -> anyhow::Result<PathBuf> {
-    if let Some(base_dirs) = BaseDirs::new() {
-        let mut dir = base_dirs.data_local_dir().to_path_buf();
+// Config Functions
+fn get_config_dir() -> anyhow::Result<PathBuf> {
+    if let Some(base_dirs) = directories::ProjectDirs::from("com", "thejayduck", "bismuth") {
+        let config_dir = base_dirs.data_dir().to_path_buf();
+        let _ = fs::create_dir_all(&config_dir);
+        Ok(config_dir)
+    } else {
+        Err(anyhow::Error::msg("Failed to get project folder"))
+    }
+}
 
+async fn write_config(config_dir: &Path, custom_command: &str) -> anyhow::Result<()> {
+   let config_path = config_dir.join("config.txt");
+
+    let mut file = tokio::fs::File::create(&config_path).await?;
+    let mut command_reader = custom_command.as_bytes();
+    
+    tokio::io::copy(&mut command_reader, &mut file).await?;
+
+    Ok(())
+}
+
+async fn read_config(config_dir: &Path) -> anyhow::Result<String> {
+    let config_path = config_dir.join("config.txt");
+    let custom_command = tokio::fs::read_to_string(&config_path).await?;
+
+    Ok(custom_command)
+}
+
+async fn save_image(image_url: &String, config_dir: &Path) -> anyhow::Result<PathBuf> {
+        let mut dir = config_dir.to_path_buf();
         let file_name = PathBuf::from(".wallpaper.jpg");
 
         let response = reqwest::get(image_url).await?;
@@ -80,11 +109,9 @@ async fn save_image(image_url: &String) -> anyhow::Result<PathBuf> {
         tokio::io::copy(&mut StreamReader::new(content), &mut file).await?;
 
         Ok(dir)
-    } else {
-        Err(errors::Error::Directory.into())
-    }
 }
 
+// Notification Function
 fn send_notification(summary: &str, body: &str, icon: &str) -> anyhow::Result<()> {
     Notification::new()
         .summary(summary)
