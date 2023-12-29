@@ -74,7 +74,7 @@ Here's an example of a custom command, in this case using `swaybg`.
 bismuth -c 'swaybg --image %'
 ```
 
-The wallpaper gets saved at `$HOME/.local/share/.wallpaper.jpg`.
+The wallpaper gets saved in `$HOME/.local/share/bismuth/.wallpaper.jpg`.
 
 ### Commands
 | Command                                      | Description                                |
@@ -119,6 +119,9 @@ Example `bismuth -c "swaybg --image %"`
 
 The `%` symbol is important as it signifies the file destination.
 
+The custom command gets saved in `$HOME/.local/share/bismuth/config.txt`.
+
 ### To-Do
 - [x] Save image as `.wallpaper.jpg` for `.fehbg`.
 - [x] Custom command support.
+- [x] Save custom command. 
